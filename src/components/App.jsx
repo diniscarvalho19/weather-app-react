@@ -3,6 +3,7 @@ import { getRequest } from "../services/weatherService";
 import Table from "./Table.jsx";
 import Chart from "./Chart.jsx";
 import Loading from "./Loading.jsx";
+import Stats from "./Stats.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/App.css";
@@ -10,7 +11,13 @@ import "../styles/App.css";
 function App() {
   const [weatherData, setWeatherData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); // State to hold error message
+  const [error, setError] = useState(null);
+
+  const [showTable, setShowTable] = useState(false);
+
+  const [showStats, setShowStats] = useState(false);
+
+  const [showChart, setShowChart] = useState(true);
 
   const [formData, setFormData] = useState({
     location: "Lisbon",
@@ -61,8 +68,13 @@ function App() {
         } else {
           setWeatherData({
             time: response.time,
+            hour: response.hour,
             temperature: response.temperature_2m,
             humidity: response.relative_humidity_2m,
+            rain: response.rain,
+            snow: response.snowfall,
+            sunshine_duration: response.sunshine_duration,
+            global_tilted_irradiance: response.global_tilted_irradiance,
           });
           setError(null);
         }
@@ -112,8 +124,41 @@ function App() {
         </>
       ) : (
         <>
-          <Chart data={weatherData}></Chart>
-          <Table data={weatherData}></Table>
+          <button
+            onClick={() => {
+              setShowTable(true);
+              setShowChart(false);
+              setShowStats(false);
+            }}
+          >
+            Show Table
+          </button>
+
+          <button
+            onClick={() => {
+              setShowChart(true);
+              setShowTable(false);
+              setShowStats(false);
+            }}
+          >
+            Show Chart
+          </button>
+
+          <button
+            onClick={() => {
+              setShowStats(true);
+              setShowChart(false);
+              setShowTable(false);
+            }}
+          >
+            Show Stats
+          </button>
+
+          {showTable && <Table data={weatherData}></Table>}
+
+          {showChart && <Chart data={weatherData}></Chart>}
+
+          {showStats && <Stats data={weatherData}></Stats>}
         </>
       )}
     </div>
