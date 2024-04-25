@@ -1,0 +1,13 @@
+  
+  .react-datepicker__input-container input {
+    /* Your custom styles here */
+    width: 240px;
+  }
+  
+  .react-datepicker-popper {
+    /* Your custom styles here */
+  }
+  
+  .react-datepicker__day {
+    /* Your custom styles here */
+  }

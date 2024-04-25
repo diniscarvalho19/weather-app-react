@@ -1,42 +1,88 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900');
+
+*{
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+  font-family: "Chivo Mono", monospace;
+
+}
+
+.app--container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 99.8vw;
+  height: 99.7vh;
+}
+
+.title--box {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 0px;
+  font-weight: 450;
+  font-size: 35px;
+  color: #8b8b8b;
+  font-family: "Chivo Mono", monospace;
+  letter-spacing: -1.5px;
+  word-spacing: -5px;
+}
+
+.title--box input{
+  color: #222222;
+  font-family: "Chivo Mono", monospace;
+  min-width: 40px;
+  font-weight: bold;
   text-align: center;
+  margin-left: 5px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.247);
+  outline: none;
+  font-size: 35px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.submit--button{
+  margin-left: 100px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.app--body{
+  margin-top: 40px;
+  border: 2px solid red;
+  display: flex;
+
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.app--buttons{
+  
+  border: 2px solid red;
+  padding: 10px;
+  margin-right: 3vw;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 }
 
-.card {
-  padding: 2em;
+.app--content{
+  border: 2px solid red;
+  height: 80vh;
+  width: 80vw;
 }
 
-.read-the-docs {
-  color: #888;
+
+button {
+  cursor: pointer;
+  border: 1px solid transparent;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+
+
+.error {
+  color: red;
 }

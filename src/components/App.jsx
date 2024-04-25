@@ -7,6 +7,7 @@ import Stats from "./Stats.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/App.css";
+import "../styles/DatePicker.css";
 
 function App() {
   const [weatherData, setWeatherData] = useState({});
@@ -15,9 +16,9 @@ function App() {
 
   const [showTable, setShowTable] = useState(false);
 
-  const [showStats, setShowStats] = useState(false);
+  const [showStats, setShowStats] = useState(true);
 
-  const [showChart, setShowChart] = useState(true);
+  const [showChart, setShowChart] = useState(false);
 
   const [formData, setFormData] = useState({
     location: "Lisbon",
@@ -75,6 +76,8 @@ function App() {
             snow: response.snowfall,
             sunshine_duration: response.sunshine_duration,
             global_tilted_irradiance: response.global_tilted_irradiance,
+            weather_code: response.weather_code,
+            wind_speed_10m: response.wind_speed_10m,
           });
           setError(null);
         }
@@ -88,79 +91,92 @@ function App() {
     fetchData();
   }, [apiURL]);
 
-  return (
-    <div className="gridContainer">
-      <label>Location:</label>
+  //Dynamic Styles
 
-      <form onSubmit={handleSubmit}>
+  const inputStyle = {
+    width: `${30 + formData.location.length * 20}px`,
+  };
+
+  return (
+    <div className="app--container">
+      <form className="title--box" onSubmit={handleSubmit}>
+        <label>Archive of</label>
         <input
+          className="city--input"
           type="string"
           name="location"
           value={formData.location}
+          style={inputStyle}
           onChange={handleInputChange}
         />
-        <br />
-        <label>Start Date:</label>
+        <label>, from</label>
         <DatePicker
           selected={formData.startDate}
           onChange={(date) => handleDateChange(date, "startDate")}
         />
-        <br />
-        <label>End Date:</label>
+        <label>to</label>
         <DatePicker
           selected={formData.endDate}
           onChange={(date) => handleDateChange(date, "endDate")}
         />
-        <br />
 
-        <button type="submit">Submit</button>
+        <button className="submit--button" type="submit">
+          Show me
+        </button>
       </form>
 
       {error && <div className="error">{error}</div>}
 
-      {loading ? (
-        <>
-          <Loading />
-        </>
-      ) : (
-        <>
-          <button
-            onClick={() => {
-              setShowTable(true);
-              setShowChart(false);
-              setShowStats(false);
-            }}
-          >
-            Show Table
-          </button>
+      <div className="app--body">
+        {loading ? (
+          <>
+            <Loading />
+          </>
+        ) : (
+          <>
+            <div className="app--buttons">
 
-          <button
-            onClick={() => {
-              setShowChart(true);
-              setShowTable(false);
-              setShowStats(false);
-            }}
-          >
-            Show Chart
-          </button>
+            <button
+                onClick={() => {
+                  setShowStats(true);
+                  setShowChart(false);
+                  setShowTable(false);
+                }}
+              >
+                Show Stats
+              </button>
+              <button
+                onClick={() => {
+                  setShowChart(true);
+                  setShowTable(false);
+                  setShowStats(false);
+                }}
+              >
+                Show Chart
+              </button>
 
-          <button
-            onClick={() => {
-              setShowStats(true);
-              setShowChart(false);
-              setShowTable(false);
-            }}
-          >
-            Show Stats
-          </button>
+              <button
+                onClick={() => {
+                  setShowTable(true);
+                  setShowChart(false);
+                  setShowStats(false);
+                }}
+              >
+                Show Table
+              </button>
 
-          {showTable && <Table data={weatherData}></Table>}
+              </div>
 
-          {showChart && <Chart data={weatherData}></Chart>}
+            <div className="app--content">
+              {showChart && <Chart data={weatherData}></Chart>}
 
-          {showStats && <Stats data={weatherData}></Stats>}
-        </>
-      )}
+              {showTable && <Table data={weatherData}></Table>}
+
+              {showStats && <Stats data={weatherData}></Stats>}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

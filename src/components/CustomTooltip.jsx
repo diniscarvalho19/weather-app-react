@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/CustomTooltip.css";
 
 function CustomTooltip({ active, payload, label }) {
     if (active && payload && payload.length) {

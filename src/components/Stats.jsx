@@ -1,65 +1,181 @@
 import React from "react";
+import "../styles/Stats.css";
+import {weatherCodesData} from "../data/weather_codes.js";
 
 const Stats = ({ data }) => {
   if (Object.keys(data).length === 0) return null;
 
-  const {time, temperature, humidity, rain, snow, sunshine_duration, global_tilted_irradiance} = data;
+  const {
+    time,
+    temperature,
+    humidity,
+    rain,
+    snow,
+    sunshine_duration,
+    global_tilted_irradiance,
+    weather_code,
+    wind_speed_10m,
+  } = data;
 
-  const averageTemperature = temperature.reduce((total, current) => total + current, 0) / temperature.length;
+  const averageHumidity = totalSum(humidity) / humidity.length;
+
+  const averageWindSpeed = totalSum(wind_speed_10m) / wind_speed_10m.length;
+
+  const averageTemperature = totalSum(temperature) / temperature.length;
 
   const maxTemperature = Math.max(...temperature);
 
   const minTemperature = Math.min(...temperature);
 
   const totalRain = totalSum(rain);
-  
+
   const totalSnow = totalSum(snow);
 
   // global_tilted_irradiance = {bi-axis | difuse and direct | W/m2}
   // totalEnergy = Wh/m2
-  const totalEnergy = global_tilted_irradiance.reduce((total, irradiance, index) => {
-    const energy = irradiance * (sunshine_duration[index] / 60);
-    return total + energy;
-    }, 0);
+  const totalEnergy = global_tilted_irradiance.reduce(
+    (total, irradiance, index) => {
+      const energy = irradiance * (sunshine_duration[index] / 60);
+      return total + energy;
+    },
+    0
+  );
 
-  const solarEnergy = calculateSolarPanelEnergy( totalEnergy) 
+  let mostFrequentWeatherCode = null;
+  let maxCount = 0;
+  let weatherCodeCounts = {};
 
-  const solarEnergyPerDay = solarEnergy / (time.length / 24)
+  weather_code.forEach(code => {
+    weatherCodeCounts[code] = (weatherCodeCounts[code] || 0) + 1;
+    if (weatherCodeCounts[code] > maxCount) {
+      maxCount = weatherCodeCounts[code];
+      mostFrequentWeatherCode = code;
+    }
+  });
 
 
+  const mostCommonWeather = weatherCodesData[mostFrequentWeatherCode];
+
+  const solarEnergy = calculateSolarPanelEnergy(totalEnergy);
+
+  const solarEnergyPerDay = solarEnergy / (time.length / 24);
 
   return (
     <div className="stats-container">
-      <div>
-        <h2>Statistics</h2>
-        <p>Average Temperature: {averageTemperature.toFixed(2)} °C</p>
-        <p>Max Temperature: {maxTemperature} °C</p>
-        <p>Min Temperature: {minTemperature} °C</p>
-        <p>Total Rain: {totalRain.toFixed(2)} mm</p>
-        <p>Total Snow: {totalSnow.toFixed(2)} cm</p>
-        <p>Total Solar Panel Energy: {solarEnergy.toFixed(2)} kWh</p>
-        <p>Total Solar Panel Energy per Day: {solarEnergyPerDay.toFixed(2)} kWh per Day (The average household consumption is 29 kWh per Day) </p>
+      <div className="main--stats">
+        <div className="icon--container">
+          <svg viewBox="0 0 32 32">
+            <g transform="translate(-155.000000, -829.000000)">
+              <path d="M174,856 C173.448,856 173,856.447 173,857 L173,860 C173,860.553 173.448,861 174,861 C174.552,861 175,860.553 175,860 L175,857 C175,856.447 174.552,856 174,856 L174,856 Z M178.067,834.028 C176.599,831.053 173.543,829 170,829 C165.25,829 161.37,832.682 161.033,837.345 C157.542,838.34 155,841.39 155,845 C155,849.26 158.54,852.731 163,852.977 C163,852.977 177.331,853 177.5,853 C182.747,853 187,848.747 187,843.5 C187,838.445 183.048,834.323 178.067,834.028 L178.067,834.028 Z M180,856 C179.448,856 179,856.447 179,857 L179,860 C179,860.553 179.448,861 180,861 C180.552,861 181,860.553 181,860 L181,857 C181,856.447 180.552,856 180,856 L180,856 Z M162,856 C161.448,856 161,856.447 161,857 L161,860 C161,860.553 161.448,861 162,861 C162.552,861 163,860.553 163,860 L163,857 C163,856.447 162.552,856 162,856 L162,856 Z M168,856 C167.448,856 167,856.447 167,857 L167,860 C167,860.553 167.448,861 168,861 C168.552,861 169,860.553 169,860 L169,857 C169,856.447 168.552,856 168,856 L168,856 Z"></path>
+            </g>
+          </svg>
+        </div>
+
+        <div className="main--info--container">
+          <div className="upper">
+            <p>{averageTemperature.toFixed(2)}°C</p>
+          </div>
+
+          <div className="downer">
+            <p>
+              {minTemperature}°C / {maxTemperature} °C
+            </p>
+          </div>
+        </div>
+
+        <div className="other--info--container">
+          <div className="other--icons--container">
+            <svg viewBox="-6 0 32 32">
+              <path d="M9 23.563v-7.563c0.313-0.094 0.625-0.125 0.813-0.125s0.5 0.031 0.813 0.125v7.563c0 1.313-0.875 3.281-3.281 3.281-2.375 0-3.25-1.969-3.25-3.281 0-0.438 0.344-0.813 0.813-0.813 0.438 0 0.813 0.375 0.813 0.813 0 0.406 0.156 1.656 1.625 1.656 1.563 0 1.656-1.375 1.656-1.656zM10.625 6.406v0.875c5.031 0.406 9 4.625 9 9.75h-0.125c-0.375-1.406-1.625-2.156-3.156-2.156s-2.781 0.75-3.156 2.156h-0.219c-0.313-1.125-1.188-1.719-2.344-2.031v0c-0.25-0.063-0.531-0.094-0.813-0.094s-0.563 0.031-0.813 0.094v0c-1.156 0.313-2.063 0.906-2.344 2.031h-0.25c-0.344-1.406-1.625-2.156-3.125-2.156-1.531 0-2.813 0.75-3.156 2.156h-0.125c0-5.125 3.969-9.344 9-9.75v-0.875c0-0.438 0.344-0.813 0.813-0.813 0.438 0 0.813 0.375 0.813 0.813z"></path>
+            </svg>
+
+            <p>{totalRain.toFixed(2)} mm</p>
+          </div>
+
+          <div className="other--icons--container">
+          <svg viewBox="0 0 24 24">
+<path  strokeWidth="0.1" d="M15.0066 3.25608C16.8483 2.85737 19.1331 2.8773 22.2423 3.65268C22.7781 3.78629 23.1038 4.32791 22.9699 4.86241C22.836 5.39691 22.2931 5.7219 21.7573 5.58829C18.8666 4.86742 16.9015 4.88747 15.4308 5.20587C13.9555 5.52524 12.895 6.15867 11.7715 6.84363L11.6874 6.89494C10.6044 7.55565 9.40515 8.28729 7.82073 8.55069C6.17734 8.82388 4.23602 8.58235 1.62883 7.54187C1.11607 7.33724 0.866674 6.75667 1.0718 6.24513C1.27692 5.73359 1.85889 5.48479 2.37165 5.68943C4.76435 6.6443 6.32295 6.77699 7.492 6.58265C8.67888 6.38535 9.58373 5.83916 10.7286 5.14119C11.855 4.45445 13.1694 3.6538 15.0066 3.25608Z" />
+<path strokeWidth="0.1" d="M22.2423 7.64302C19.1331 6.86765 16.8483 6.84772 15.0066 7.24642C13.1694 7.64415 11.855 8.44479 10.7286 9.13153C9.58373 9.8295 8.67888 10.3757 7.492 10.573C6.32295 10.7673 4.76435 10.6346 2.37165 9.67977C1.85889 9.47514 1.27692 9.72393 1.0718 10.2355C0.866674 10.747 1.11607 11.3276 1.62883 11.5322C4.23602 12.5727 6.17734 12.8142 7.82073 12.541C9.40515 12.2776 10.6044 11.546 11.6874 10.8853L11.7715 10.834C12.895 10.149 13.9555 9.51558 15.4308 9.19621C16.9015 8.87781 18.8666 8.85777 21.7573 9.57863C22.2931 9.71224 22.836 9.38726 22.9699 8.85275C23.1038 8.31825 22.7781 7.77663 22.2423 7.64302Z" />
+<path  strokeWidth="1.7" fill="none" d="M18.9998 10.0266C18.6526 10.0266 18.3633 10.2059 18.1614 10.4772C18.0905 10.573 17.9266 10.7972 17.7089 11.111C17.4193 11.5283 17.0317 12.1082 16.6424 12.7555C16.255 13.3996 15.8553 14.128 15.5495 14.8397C15.2567 15.5213 14.9989 16.2614 14.9999 17.0117C15.0006 17.2223 15.0258 17.4339 15.0604 17.6412C15.1182 17.9872 15.2356 18.4636 15.4804 18.9521C15.7272 19.4446 16.1131 19.9674 16.7107 20.3648C17.3146 20.7664 18.0748 21 18.9998 21C19.9248 21 20.685 20.7664 21.2888 20.3648C21.8864 19.9674 22.2724 19.4446 22.5192 18.9522C22.764 18.4636 22.8815 17.9872 22.9393 17.6413C22.974 17.4337 22.9995 17.2215 22.9998 17.0107C23.0001 16.2604 22.743 15.5214 22.4501 14.8397C22.1444 14.128 21.7447 13.3996 21.3573 12.7555C20.968 12.1082 20.5803 11.5283 20.2907 11.111C20.073 10.7972 19.909 10.573 19.8382 10.4772C19.6363 10.2059 19.3469 10.0266 18.9998 10.0266ZM20.6119 15.6257C20.3552 15.0281 20.0049 14.3848 19.6423 13.782C19.4218 13.4154 19.2007 13.0702 18.9998 12.7674C18.7989 13.0702 18.5778 13.4154 18.3573 13.782C17.9948 14.3848 17.6445 15.0281 17.3878 15.6257L17.3732 15.6595C17.1965 16.0704 16.9877 16.5562 17.0001 17.0101C17.0121 17.3691 17.1088 17.7397 17.2693 18.0599C17.3974 18.3157 17.574 18.5411 17.8201 18.7048C18.06 18.8643 18.4248 19.0048 18.9998 19.0048C19.5748 19.0048 19.9396 18.8643 20.1795 18.7048C20.4256 18.5411 20.6022 18.3156 20.7304 18.0599C20.8909 17.7397 20.9876 17.3691 20.9996 17.01C21.0121 16.5563 20.8032 16.0705 20.6265 15.6597L20.6119 15.6257Z" />
+<path strokeWidth="0.1" d="M14.1296 11.5308C14.8899 11.2847 15.4728 12.076 15.1153 12.7892C14.952 13.1151 14.7683 13.3924 14.4031 13.5214C13.426 13.8666 12.6166 14.3527 11.7715 14.8679L11.6874 14.9192C10.6044 15.5799 9.40516 16.3115 7.82074 16.5749C6.17735 16.8481 4.23604 16.6066 1.62884 15.5661C1.11608 15.3615 0.866688 14.7809 1.07181 14.2694C1.27694 13.7578 1.8589 13.509 2.37167 13.7137C4.76436 14.6685 6.32297 14.8012 7.49201 14.6069C8.67889 14.4096 9.58374 13.8634 10.7286 13.1654C11.8166 12.5021 12.9363 11.9171 14.1296 11.5308Z" />
+</svg>
+            <p>{averageHumidity.toFixed(2)} km/h</p>
+          </div>
+
+          <div className="other--icons--container">
+            <svg viewBox="0 0 24 24">
+              <path d="M11.9994 3V7M11.9994 7V17M11.9994 7L8.99943 4M11.9994 7L14.9994 4M11.9994 17V21M11.9994 17L8.99943 20M11.9994 17L14.9994 20M4.20624 7.49999L7.67034 9.49999M7.67034 9.49999L16.3306 14.5M7.67034 9.49999L3.57227 10.5981M7.67034 9.49999L6.57227 5.40191M16.3306 14.5L19.7947 16.5M16.3306 14.5L17.4287 18.5981M16.3306 14.5L20.4287 13.4019M4.2067 16.5L7.6708 14.5M7.6708 14.5L16.3311 9.49999M7.6708 14.5L3.57273 13.4019M7.6708 14.5L6.57273 18.5981M16.3311 9.49999L19.7952 7.49999M16.3311 9.49999L17.4291 5.40192M16.3311 9.49999L20.4291 10.5981" />
+            </svg>
+            <p>{totalSnow.toFixed(2)} cm</p>
+          </div>
+
+          <div className="other--icons--container">
+          <svg viewBox="0 0 24 24" >
+          <path  fill="none"  stroke-width="1.75"  d="M15.7639 7C16.3132 6.38625 17.1115 6 18 6C19.6569 6 21 7.34315 21 9C21 10.6569 19.6569 12 18 12H3M8.50926 4.66667C8.87548 4.2575 9.40767 4 10 4C11.1046 4 12 4.89543 12 6C12 7.10457 11.1046 8 10 8H3M11.5093 19.3333C11.8755 19.7425 12.4077 20 13 20C14.1046 20 15 19.1046 15 18C15 16.8954 14.1046 16 13 16H3" />
+          </svg>
+            <p>{averageWindSpeed.toFixed(2)} km/h</p>
+          </div>
+
+          <div className="other--icons--container">
+            <svg viewBox="0 0 260 244">
+              <path
+                d="M258,54v-8h-25.176c-0.596-3.416-1.941-6.576-3.86-9.307l17.806-17.806l-5.656-5.657l-17.803,17.802
+	c-2.731-1.926-5.892-3.275-9.311-3.876V2h-8v25.148c-3.433,0.596-6.609,1.947-9.35,3.879L178.87,13.248l-5.656,5.657l17.781,17.78
+	c-1.922,2.733-3.269,5.896-3.866,9.315H162v8h25.129c0.598,3.428,1.95,6.597,3.88,9.335L173.23,81.112l5.656,5.657l17.783-17.782
+	c2.737,1.924,5.906,3.271,9.331,3.865V98h8V72.844c3.41-0.599,6.565-1.944,9.292-3.862l17.804,17.805l5.656-5.656l-17.803-17.804
+	c1.927-2.735,3.276-5.902,3.874-9.326H258z M209.976,34.8c8.382,0,15.2,6.819,15.2,15.2s-6.818,15.2-15.2,15.2
+	c-8.381,0-15.199-6.819-15.199-15.2S201.595,34.8,209.976,34.8z M80,236v6H43v-6h15v-22h6v22H80z M63.537,82l9.723,38h24.545
+	l-9.773-38H63.537z M84.518,164h24.603l-9.773-38H74.795L84.518,164z M78.325,164l-9.723-38h-24.52l9.723,38H78.325z M26.632,82H2
+	l9.772,38h24.582L26.632,82z M67.067,120l-9.723-38H32.825l9.723,38H67.067z M95.776,208h24.661l-9.773-38H86.053L95.776,208z
+	 M55.34,170l9.723,38h24.52l-9.723-38H55.34z M37.89,126H13.315l9.772,38h24.525L37.89,126z M24.631,170l9.772,38H58.87l-9.723-38
+	H24.631z M178.667,190h17.055l6.686,26h-17.089L178.667,190z M163,237v-16h-5v16h-11v5h27v-5H163z M155.259,185l-7.164-28h16.968
+	l7.164,28H155.259z M146.815,152l-6.652-26h16.968l6.652,26H146.815z M173.506,190l6.652,26H163.19l-6.652-26H173.506z M151.377,190
+	l6.652,26h-16.834l-6.686-26H151.377z M141.654,152h-16.917l-6.686-26h16.951L141.654,152z M150.098,185h-16.874l-7.201-28h16.911
+	L150.098,185z M179.264,126l6.686,26h-17.006l-6.652-26H179.264z M170.223,157h17.013l7.201,28h-17.049L170.223,157z M240,238v4h-16
+	v-4h6v-9h4v9H240z M230.721,210l3.838,15h9.591l-3.838-15H230.721z M248.279,225H258l-3.858-15h-9.702L248.279,225z M217.049,210
+	l3.858,15h9.524l-3.838-15H217.049z M243.417,206h9.696l-4.115-16h-9.675L243.417,206z M216.358,170h-9.596l4.115,16h9.575
+	L216.358,170z M234.206,170l4.094,16h9.67l-4.115-16H234.206z M221.475,190h-9.57l4.115,16h9.549L221.475,190z M239.288,206
+	l-4.094-16h-9.591l4.094,16H239.288z M234.171,186l-4.094-16h-9.591l4.094,16H234.171z"
+              />
+            </svg>
+            <p>{solarEnergy.toFixed(2)} kWh</p>
+          </div>
+
+          
+        </div>
+      </div>
+      <div className="curiosities--container">
+        <p>
+          Total Solar Panel Energy per Day: {solarEnergyPerDay.toFixed(2)} kWh
+          per day
+        </p>
+        <p>(The average household consumption per day is 29 kWh) </p>
+
+        <br></br>
+
+        <p>Most common weather:</p> 
+        <p>{mostCommonWeather}</p>
       </div>
     </div>
   );
 };
 
-function totalSum(data_array){
-    return data_array.reduce((total, current) => total + current, 0);
+function totalSum(data_array) {
+  return data_array.reduce((total, current) => total + current, 0);
 }
 
-function calculateSolarPanelEnergy( totalEnergy, panelEfficiency = 0.17, panelSurfaceArea = 2) {
-    
-    const usableEnergy = totalEnergy * panelEfficiency * panelSurfaceArea; //panelSurfaceArea in m2
+function calculateSolarPanelEnergy(
+  totalEnergy,
+  panelEfficiency = 0.17,
+  panelSurfaceArea = 2
+) {
+  const usableEnergy = totalEnergy * panelEfficiency * panelSurfaceArea; //panelSurfaceArea in m2
 
-    const energyInKWh = usableEnergy / 1000; // Wh to kWh
+  const energyInKWh = usableEnergy / 1000; // Wh to kWh
 
-    return energyInKWh;
+  return energyInKWh;
 }
-
 
 //Prop types thingys here
 
 export default Stats;
-
-
