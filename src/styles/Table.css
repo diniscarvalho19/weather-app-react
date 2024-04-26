@@ -23,7 +23,11 @@
 
 table {
     width: 100%;
-    border-spacing: 0;   
+    border: 3px solid #616161;
+    border-radius: 10px;
+    border-spacing: 0;  
+    background-color: #ffffff;
+     
 }
 
   th, td {

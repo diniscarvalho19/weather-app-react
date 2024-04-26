@@ -1,7 +1,8 @@
 import React from "react";
 import "../styles/Stats.css";
-import {weatherCodesData} from "../data/weather_codes.js";
+import { weatherCodesData } from "../data/weather_codes.js";
 import SvgContainer from "./SvgContainer.jsx";
+import { Tooltip } from "react-tooltip";
 
 const Stats = ({ data }) => {
   if (Object.keys(data).length === 0) return null;
@@ -46,7 +47,7 @@ const Stats = ({ data }) => {
   let maxCount = 0;
   let weatherCodeCounts = {};
 
-  weather_code.forEach(code => {
+  weather_code.forEach((code) => {
     weatherCodeCounts[code] = (weatherCodeCounts[code] || 0) + 1;
     if (weatherCodeCounts[code] > maxCount) {
       maxCount = weatherCodeCounts[code];
@@ -54,8 +55,8 @@ const Stats = ({ data }) => {
     }
   });
 
-
-  const mostCommonWeatherDescription = weatherCodesData[mostFrequentWeatherCode][0];
+  const mostCommonWeatherDescription =
+    weatherCodesData[mostFrequentWeatherCode][0];
 
   const mostCommonWeatherKey = weatherCodesData[mostFrequentWeatherCode][1];
 
@@ -65,46 +66,115 @@ const Stats = ({ data }) => {
 
   return (
     <div className="stats-container">
+      <div className="info--icon--container">
+      <SvgContainer
+            svg_key="info"
+            tooltip_message={
+              <p> Hover over the data you want to know more!</p>
+            }
+          ></SvgContainer>
+      </div>
+      
       <div className="main--stats">
-
-<div className="main--icon--container">
-        <SvgContainer class_name="icon--container" svg_key={"hail"} value={mostCommonWeatherKey}></SvgContainer>
+        <div className="main--icon--container">
+          <SvgContainer
+            class_name="icon--container"
+            svg_key={mostCommonWeatherKey}
+            value={mostCommonWeatherKey}
+            tooltip_message={
+              <p> Most common weather event in the selected period.</p>
+            }
+          ></SvgContainer>
         </div>
 
         <div className="main--info--container">
+        
           <div className="upper">
             <p>{averageTemperature.toFixed(1)}°C</p>
           </div>
 
+          <Tooltip anchorSelect=".upper" place="top">
+          <p>Average air temperature at 2 meters above ground.</p>
+          </Tooltip>
+
           <div className="downer">
-            <p>
-              {minTemperature}°C / {maxTemperature} °C
+            <p> <span id="min">{minTemperature}°C</span> / <span id="max">{maxTemperature} °C</span>
             </p>
           </div>
+
+          <Tooltip anchorSelect="#min" place="bottom">
+          <p>Minimum air temperature at 2 meters above ground.</p>
+          </Tooltip>
+
+          <Tooltip anchorSelect="#max" place="bottom">
+          <p>Minimum air temperature at 2 meters above ground.</p>
+          </Tooltip>
         </div>
 
         <div className="other--info--container">
-            <SvgContainer class_name="other--icons--container" svg_key="total-rain" value={totalRain.toFixed(1) + " mm"}></SvgContainer>
-           
-            <SvgContainer class_name="other--icons--container" svg_key="avg-humidity" value={averageHumidity.toFixed(1) + " %"}></SvgContainer>
+          <SvgContainer
+            class_name="other--icons--container"
+            svg_key="total-rain"
+            value={totalRain.toFixed(1)}
+            unit={"mm"}
+            tooltip_message={
+              <p> Total rain from large scale weather systems of the preceding hour in millimeter.</p>
+            }
+          ></SvgContainer>
 
-            <SvgContainer class_name="other--icons--container" svg_key="total-snow" value={totalSnow.toFixed(1) + " cm"}></SvgContainer>
+          <SvgContainer
+            class_name="other--icons--container"
+            svg_key="avg-humidity"
+            value={averageHumidity.toFixed(1)}
+            unit={"%"}
+            tooltip_message={
+              <p> Average relative humidity at 2 meters above ground.</p>
+            }
+          ></SvgContainer>
 
-            <SvgContainer class_name="other--icons--container" svg_key="avg-wind" value={averageWindSpeed.toFixed(1) + " km/h"}></SvgContainer>
+          <SvgContainer
+            class_name="other--icons--container"
+            svg_key="total-snow"
+            value={totalSnow.toFixed(1)}
+            unit={"cm"}
+            tooltip_message={
+              <p> Total snowfall amount of the preceding hour in centimeters.</p>
+            }
+          ></SvgContainer>
 
-            <SvgContainer class_name="other--icons--container" svg_key="total-solar-energy" value={solarEnergy.toFixed(1) + " kWh"}></SvgContainer>
-          
+          <SvgContainer
+            class_name="other--icons--container"
+            svg_key="avg-wind"
+            value={averageWindSpeed.toFixed(1)}
+            unit={"km/h"}
+            tooltip_message={
+              <p> Average wind speed at 10 meters above ground. </p>
+            }
+          ></SvgContainer>
+
+          <SvgContainer
+            class_name="other--icons--container"
+            svg_key="total-solar-energy"
+            value={solarEnergy.toFixed(1)}
+            unit={"kWh"}
+            tooltip_message={
+              <>
+              <p>
+                Total energy that could be harnesses with a
+                <br></br>
+                Solar Panel of 2m&sup2; surface area and a 17% efficiency.
+                </p>
+                <p>
+                  [Average per Day:{" "}
+                  {solarEnergyPerDay.toFixed(2)} kWh]
+                </p>
+                <p>(The average household consumption per day is 29 kWh) </p>
+              </>
+            }
+          ></SvgContainer>
         </div>
       </div>
       <div className="curiosities--container">
-        <p>
-          Total Solar Panel Energy per Day: {solarEnergyPerDay.toFixed(2)} kWh
-        </p>
-        <p>(The average household consumption per day is 29 kWh) </p>
-
-        <br></br>
-
-        <p>Most common weather:</p> 
         <p>{mostCommonWeatherDescription}</p>
       </div>
     </div>
