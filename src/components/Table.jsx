@@ -17,7 +17,7 @@ function Table({ data }) {
     wind_speed_10m,
   } = data;
 
-  const [pageStep, setPageStep] = useState(15);
+  const [pageStep, setPageStep] = useState(11);
 
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -49,7 +49,7 @@ function Table({ data }) {
   return (
     <div className="table--container">
       <div className="table--settings">
-        <button onClick={decreasePageSize}> &larr;</button>
+        <button className="main--nav--button" onClick={decreasePageSize}> &larr;</button>
         <div>
           <label> Go to page: </label>
           <input
@@ -60,21 +60,21 @@ function Table({ data }) {
             onChange={(e) => handleChange(e.target.value)}
           />
         </div>
-        <button onClick={increasePageSize}> &rarr;</button>
+        <button className="main--nav--button" onClick={increasePageSize}> &rarr;</button>
       </div>
 
       <table>
         <thead>
           <tr>
-            <th>Time</th>
-            <th>Temperature(°C)</th>
-            <th>Humidity(%)</th>
+            <th id="td_time">Time</th>
+            <th>Temp.(°C)</th>
+            <th>RH (%)</th>
             <th>Rain(mm)</th>
             <th>Snow(cm)</th>
-            <th>Sunshine Duration(s)</th>
-            <th>Global Tilted Radiance(Wh)</th>
-            <th>Weather Code</th>
-            <th>Wind Speed(m/s)</th>
+            <th>Sun(s)</th>
+            <th>GTI(Wh)</th>
+            <th>WMO</th>
+            <th>Wind(m/s)</th>
           </tr>
         </thead>
         <tbody>

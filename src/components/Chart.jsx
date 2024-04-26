@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CustomTooltip from "./CustomTooltip.jsx";
+import {ResponsiveContainer} from "recharts";
 import "../styles/Chart.css";
 
 import {
@@ -38,6 +39,7 @@ const Charts = ({ data }) => {
   const [showWeatherCode, setShowWeatherCode] = useState(false);
   const [showWindSpeed, setShowWindSpeed] = useState(false);
 
+
   //sunshine_duration from seconds per hour to percentage per hour
   const sunshinePercentage = sunshine_duration.map(
     (duration) => (duration / 3600) * 100
@@ -59,7 +61,8 @@ const Charts = ({ data }) => {
   return (
     <div className="chart-container">
       <div className="chart">
-        <LineChart width={800} height={400} data={chartData}>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={chartData}>
           <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
           <XAxis dataKey="time" />
           <YAxis />
@@ -138,34 +141,35 @@ const Charts = ({ data }) => {
             />
           )}
         </LineChart>
+        </ResponsiveContainer>
       </div>
       <div className="chart-controls">
-        <button onClick={() => setShowTemperature(!showTemperature)}>
+        <button className="main--nav--button" id={showTemperature + "_chart_button"} onClick={() => setShowTemperature(!showTemperature)}>
           {showTemperature ? "Hide Temperature" : "Show Temperature"}
         </button>
-        <button onClick={() => setShowHumidity(!showHumidity)}>
+        <button className="main--nav--button" id={showHumidity + "_chart_button"} onClick={() => setShowHumidity(!showHumidity)}>
           {showHumidity ? "Hide Humidity" : "Show Humidity"}
         </button>
-        <button onClick={() => setShowRain(!showRain)}>
+        <button className="main--nav--button" id={showRain + "_chart_button"} onClick={() => setShowRain(!showRain)}>
           {showRain ? "Hide Rain" : "Show Rain"}
         </button>
-        <button onClick={() => setShowSnow(!showSnow)}>
+        <button className="main--nav--button" id={showSnow + "_chart_button"} onClick={() => setShowSnow(!showSnow)}>
           {showSnow ? "Hide Snow" : "Show Snow"}
         </button>
-        <button onClick={() => setShowSunshineDuration(!showSunshineDuration)}>
+        <button className="main--nav--button" id={showSunshineDuration + "_chart_button"} onClick={() => setShowSunshineDuration(!showSunshineDuration)}>
           {showSunshineDuration ? "Hide Sunshine" : "Show Sunshine"}
         </button>
-        <button
+        <button className="main--nav--button" id={showGlobalTiltedIrradiance + "_chart_button"}
           onClick={() =>
             setShowGlobalTiltedIrradiance(!showGlobalTiltedIrradiance)
           }
         >
           {showGlobalTiltedIrradiance ? "Hide GTI" : "Show GTI"}
         </button>
-        <button onClick={() => setShowWeatherCode(!showWeatherCode)}>
+        <button className="main--nav--button" id={showWeatherCode + "_chart_button"} onClick={() => setShowWeatherCode(!showWeatherCode)}>
           {showWeatherCode ? "Hide Weather Code" : "Show Weather Code"}
         </button>
-        <button onClick={() => setShowWindSpeed(!showWindSpeed)}>
+        <button className="main--nav--button" id={showWindSpeed + "_chart_button"} onClick={() => setShowWindSpeed(!showWindSpeed)}>
           {showWindSpeed ? "Hide Wind Speed" : "Show Wind Speed"}
         </button>
       </div>

@@ -127,7 +127,7 @@ function App() {
           maxDate={maxDate} 
         />
 
-        <button className="submit--button" type="submit">
+        <button className="submit--button main--nav--button" type="submit">
           Show me
         </button>
       </form>
@@ -148,7 +148,7 @@ function App() {
 
             <div className="app--buttons">
 
-            <button
+            <button className="main--nav--button" id={showStats + "_button"}
                 onClick={() => {
                   setShowStats(true);
                   setShowChart(false);
@@ -157,7 +157,7 @@ function App() {
               >
                 Show Stats
               </button>
-              <button
+              <button className="main--nav--button" id={showChart + "_button"}
                 onClick={() => {
                   setShowChart(true);
                   setShowTable(false);
@@ -167,7 +167,7 @@ function App() {
                 Show Chart
               </button>
 
-              <button
+              <button className="main--nav--button" id={showTable + "_button"}
                 onClick={() => {
                   setShowTable(true);
                   setShowChart(false);

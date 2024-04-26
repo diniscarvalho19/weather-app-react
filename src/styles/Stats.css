@@ -62,7 +62,9 @@
   }
 
   .curiosities--container{
-    justify-self: flex-start;
+    margin-top: 30px;
+    width: 80%;
+    text-align: center;
     font-size: 1.2vw;
   }
   

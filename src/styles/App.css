@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900');
+@import url("https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100..900;1,100..900");
 
-*{
+* {
   margin: 0px;
   padding: 0px;
   overflow: hidden;
   font-family: "Chivo Mono", monospace;
-
 }
 
 .app--container {
@@ -29,36 +28,57 @@
   word-spacing: -5px;
 }
 
-.title--box input{
+.title--box input {
+  max-width: 23vw;
   color: #222222f8;
   height: fit-content;
   font-family: "Chivo Mono", monospace;
   min-width: 3vw;
   font-weight: bold;
   text-align: center;
-  margin-left: 5px;
+  margin-left: 20px;
   border: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.247);
+  border-bottom: 3px solid rgba(0, 0, 0, 0.795);
   outline: none;
   font-size: 35px;
 }
 
-.submit--button{
-  margin-top: 0.5vh;
-  font-size: 1.2vw;
-  font-weight: 600;
-  height: fit-content;
-  margin-left: 3vw;
-}
-
-.app--body{
+.app--body {
   margin-top: 2vh;
   display: flex;
 }
 
-.app--buttons{
+.app--buttons {
   border: 5px solid #4b4b4b;
+  background-color: #4b4b4b73;
+  --color: rgba(225, 225, 225, 0.75);
+  background-image: linear-gradient(
+      0deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    ),
+    linear-gradient(
+      90deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    );
+  background-size: 10px 100px;
   padding: 10px;
+  padding-right: 13px;
   margin-right: 3vw;
   display: flex;
   flex-direction: column;
@@ -67,26 +87,89 @@
   border-radius: 25px;
 }
 
-.app--content{
+.app--content {
   border-radius: 25px;
   border: 5px solid #4b4b4b;
   height: 80vh;
   width: 80vw;
   --color: rgba(225, 225, 225, 0.75);
-  background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent),
-      linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent);
+  background-image: linear-gradient(
+      0deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    ),
+    linear-gradient(
+      90deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    );
   background-size: 75px 75px;
 }
 
-
-button {
-  text-wrap: nowrap;
+.main--nav--button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  text-align: center;
+  background-color: #ffffff;
+  color: black;
+  border: 2px solid #222222;
+  border-radius: 8px;
   cursor: pointer;
-  border: 2px solid #222222f8;
-  padding: 6px 12px;
-  font-size: 14px;
-  border-radius: 5px;
+  box-shadow: 5px 5px 0px #000;
+  transition: all 0.2s ease-in-out;
 }
 
+.main--nav--button:hover {
+  background-color: #000000;
+  box-shadow: 5px 5px 0px #ffffff;
+  color: rgb(255, 255, 255);
+}
 
+.main--nav--button:active {
+  background-color: #000000;
+  box-shadow: 0 0 0 #ffffff;
+  color: rgb(255, 255, 255);
+  transform: translateY(10px);
+}
+
+#true_button {
+  background-color: #000000e0;
+  color: rgb(255, 255, 255);
+  border-color: #000000;
+  box-shadow: 0px 0px 0px #000;
+  transform: translateY(10px);
+}
+
+.submit--button {
+  font-size: 20px;
+  text-wrap: nowrap;
+  font-weight: 600;
+  height: fit-content;
+  box-shadow: 0 0 0 #ffffff;
+  margin-left: 3vw;
+}
+
+.submit--button:hover {
+  box-shadow: 0 0 0 #ffffff;
+}
+
+.submit--button:active {
+  box-shadow: 0 0 0 #ffffff;
+  transform: translateY(3px);
+}
 
