@@ -3,6 +3,7 @@ import { getRequest } from "../services/weatherService";
 import Table from "./Table.jsx";
 import Chart from "./Chart.jsx";
 import Loading from "./Loading.jsx";
+import Error from "./Error.jsx";
 import Stats from "./Stats.jsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -20,10 +21,13 @@ function App() {
 
   const [showChart, setShowChart] = useState(false);
 
+  const maxDate =  new Date(new Date().getTime()-(2*24*60*60*1000));
+
+
   const [formData, setFormData] = useState({
     location: "Lisbon",
-    startDate: new Date("2023-06-02"),
-    endDate: new Date("2023-06-02"),
+    startDate: maxDate,
+    endDate: maxDate,
   });
 
   const [apiURL, setApiURL] = useState(
@@ -113,11 +117,14 @@ function App() {
         <DatePicker
           selected={formData.startDate}
           onChange={(date) => handleDateChange(date, "startDate")}
+          maxDate={maxDate} 
+          showPopperArrow={true}
         />
         <label>to</label>
         <DatePicker
           selected={formData.endDate}
           onChange={(date) => handleDateChange(date, "endDate")}
+          maxDate={maxDate} 
         />
 
         <button className="submit--button" type="submit">
@@ -125,15 +132,20 @@ function App() {
         </button>
       </form>
 
-      {error && <div className="error">{error}</div>}
-
       <div className="app--body">
         {loading ? (
           <>
             <Loading />
           </>
         ) : (
+          error ? (
+            <>
+            <Error error={error}></Error>
+            </>
+          ) : (
+            
           <>
+
             <div className="app--buttons">
 
             <button
@@ -174,7 +186,7 @@ function App() {
 
               {showStats && <Stats data={weatherData}></Stats>}
             </div>
-          </>
+          </>)
         )}
       </div>
     </div>

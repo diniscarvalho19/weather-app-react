@@ -20,9 +20,8 @@
 .title--box {
   display: flex;
   justify-content: space-around;
-  align-items: center;
   gap: 0px;
-  font-weight: 450;
+  font-weight: 500;
   font-size: 35px;
   color: #8b8b8b;
   font-family: "Chivo Mono", monospace;
@@ -31,9 +30,10 @@
 }
 
 .title--box input{
-  color: #222222;
+  color: #222222f8;
+  height: fit-content;
   font-family: "Chivo Mono", monospace;
-  min-width: 40px;
+  min-width: 3vw;
   font-weight: bold;
   text-align: center;
   margin-left: 5px;
@@ -44,38 +44,45 @@
 }
 
 .submit--button{
-  margin-left: 100px;
+  margin-top: 0.5vh;
+  font-size: 1.2vw;
+  font-weight: 600;
+  height: fit-content;
+  margin-left: 3vw;
 }
 
 .app--body{
-  margin-top: 40px;
-  border: 2px solid red;
+  margin-top: 2vh;
   display: flex;
-
 }
 
 .app--buttons{
-  
-  border: 2px solid red;
+  border: 5px solid #991b1b60;
   padding: 10px;
   margin-right: 3vw;
-  
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+  border-radius: 25px;
 }
 
 .app--content{
-  border: 2px solid red;
+  border-radius: 25px;
+  border: 5px solid rgba(7, 142, 41, 0.5);
   height: 80vh;
   width: 80vw;
+  --color: rgba(225, 225, 225, 0.75);
+  background-image: linear-gradient(0deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent),
+      linear-gradient(90deg, transparent 24%, var(--color) 25%, var(--color) 26%, transparent 27%,transparent 74%, var(--color) 75%, var(--color) 76%, transparent 77%,transparent);
+  background-size: 75px 75px;
 }
 
 
 button {
+  text-wrap: nowrap;
   cursor: pointer;
-  border: 1px solid transparent;
+  border: 2px solid #222222f8;
   padding: 6px 12px;
   font-size: 14px;
   border-radius: 5px;
@@ -83,6 +90,3 @@ button {
 
 
 
-.error {
-  color: red;
-}

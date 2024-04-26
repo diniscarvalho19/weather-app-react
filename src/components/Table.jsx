@@ -17,7 +17,7 @@ function Table({ data }) {
     wind_speed_10m,
   } = data;
 
-  const [pageStep, setPageStep] = useState(10);
+  const [pageStep, setPageStep] = useState(15);
 
   const [currentPage, setCurrentPage] = useState(0);
 

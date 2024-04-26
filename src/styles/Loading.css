@@ -1,0 +1,48 @@
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+
+@keyframes fadeInAndOut {
+  0% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0%;
+  }
+}
+
+.loading--container {
+  height: 80vh;
+  width: 92vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
+  border: 5px solid rgba(7, 142, 142, 0.6);
+  letter-spacing: 0.7vw;
+  background-color: rgba(143, 160, 160, 0.4);
+  background-size: 50px;
+  animation: moveBackground 15s linear infinite;
+}
+
+.loading--container p {
+  color: rgb(255, 255, 255);
+  font-size: 10vh;
+  font-weight: bold;
+  text-shadow: -1.8px -1.8px 0 #000, 1.8px -1.8px 0 #000, -1.8px 1.8px 0 #000,
+    1.8px 1.8px 0 #000;
+}
+
+.dot{
+  animation: fadeInAndOut 1s ease-in-out infinite;
+  animation-delay: var(--i);
+}
+
+
