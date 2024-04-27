@@ -26,7 +26,6 @@ function App() {
 
   const envApiUrl = (import.meta.env.MODE === "development" ? "http://localhost:3000/" : "https://sleepy-river-65200-79c7ffcf377b.herokuapp.com/");
 
-  console.log(envApiUrl)
 
 
   const [formData, setFormData] = useState({
