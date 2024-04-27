@@ -23,7 +23,10 @@ function App() {
 
   const maxDate =  new Date(new Date().getTime()-(2*24*60*60*1000));
 
+
   const envApiUrl = (import.meta.env.MODE === "development" ? "http://localhost:3000/" : "https://sleepy-river-65200-79c7ffcf377b.herokuapp.com/");
+
+  console.log(envApiUrl)
 
 
   const [formData, setFormData] = useState({
@@ -55,7 +58,7 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setApiURL(
-      `https://sleepy-river-65200-79c7ffcf377b.herokuapp.com/weather?location=${formData.location}&start_date=${formData.startDate}&end_date=${formData.endDate}`
+      `${envApiUrl}/weather?location=${formData.location}&start_date=${formData.startDate}&end_date=${formData.endDate}`
     );
   };
 
