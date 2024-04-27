@@ -168,7 +168,7 @@ const Stats = ({ data }) => {
                   [Average per Day:{" "}
                   {solarEnergyPerDay.toFixed(2)} kWh]
                 </p>
-                <p>(The average household consumption per day is 29 kWh) </p>
+                <p>(The average household consumption in Portugal per day is 9.15 kWh) </p>
               </>
             }
           ></SvgContainer>
