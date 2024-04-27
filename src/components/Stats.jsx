@@ -37,7 +37,7 @@ const Stats = ({ data }) => {
   // totalEnergy = Wh/m2
   const totalEnergy = global_tilted_irradiance.reduce(
     (total, irradiance, index) => {
-      const energy = irradiance * (sunshine_duration[index] / 60);
+      const energy = irradiance * (sunshine_duration[index] / 3600);
       return total + energy;
     },
     0
