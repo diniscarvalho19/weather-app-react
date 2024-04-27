@@ -31,7 +31,7 @@ function App() {
   });
 
   const [apiURL, setApiURL] = useState(
-    `http://localhost:3000/weather?location=${formData.location}&start_date=${formData.startDate}&end_date=${formData.endDate}`
+    `https://sleepy-river-65200-79c7ffcf377b.herokuapp.com/weather?location=${formData.location}&start_date=${formData.startDate}&end_date=${formData.endDate}`
   );
 
   const handleInputChange = (event) => {
@@ -53,7 +53,7 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     setApiURL(
-      `http://localhost:3000/weather?location=${formData.location}&start_date=${formData.startDate}&end_date=${formData.endDate}`
+      `https://sleepy-river-65200-79c7ffcf377b.herokuapp.com/weather?location=${formData.location}&start_date=${formData.startDate}&end_date=${formData.endDate}`
     );
   };
 
