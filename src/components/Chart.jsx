@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CustomTooltip from "./CustomTooltip.jsx";
-import {ResponsiveContainer} from "recharts";
+import { ResponsiveContainer } from "recharts";
 import "../styles/Chart.css";
 
 import {
@@ -13,7 +13,7 @@ import {
   Legend,
 } from "recharts";
 
-const Charts = ({ data }) => {
+const Charts = ({ data,chartVisibility,  toggleChartVisibility }) => {
   if (Object.keys(data).length === 0) return null;
 
   const {
@@ -29,16 +29,9 @@ const Charts = ({ data }) => {
     wind_speed_10m,
   } = data;
 
-  const [showTemperature, setShowTemperature] = useState(true);
-  const [showHumidity, setShowHumidity] = useState(true);
-  const [showRain, setShowRain] = useState(false);
-  const [showSnow, setShowSnow] = useState(false);
-  const [showSunshineDuration, setShowSunshineDuration] = useState(false);
-  const [showGlobalTiltedIrradiance, setShowGlobalTiltedIrradiance] =
-    useState(false);
-  const [showWeatherCode, setShowWeatherCode] = useState(false);
-  const [showWindSpeed, setShowWindSpeed] = useState(false);
+ 
 
+  
 
   //sunshine_duration from seconds per hour to percentage per hour
   const sunshinePercentage = sunshine_duration.map(
@@ -61,116 +54,150 @@ const Charts = ({ data }) => {
   return (
     <div className="chart-container">
       <div className="chart">
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData}>
-          <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
-          <XAxis dataKey="time" />
-          <YAxis />
-          <Tooltip content={<CustomTooltip />} />
-          <Legend />
-          {showTemperature && (
-            <Line
-              type="monotone"
-              dataKey="temperature"
-              name="Temperature (°C)"
-              stroke="#8884d8"
-              dot={false}
-            />
-          )}
-          {showHumidity && (
-            <Line
-              type="monotone"
-              dataKey="humidity"
-              name="Humidity (%)"
-              stroke="#82ca9d"
-              dot={false}
-            />
-          )}
-          {showRain && (
-            <Line
-              type="monotone"
-              dataKey="rain"
-              name="Rain (mm)"
-              stroke="#ffc658"
-              dot={false}
-            />
-          )}
-          {showSnow && (
-            <Line
-              type="monotone"
-              dataKey="snow"
-              name="Snow (cm)"
-              stroke="#00bcd4"
-              dot={false}
-            />
-          )}
-          {showSunshineDuration && (
-            <Line
-              type="monotone"
-              dataKey="sunshine_duration"
-              name="Sunshine Duration (%)"
-              stroke="#ff9800"
-              dot={false}
-            />
-          )}
-          {showGlobalTiltedIrradiance && (
-            <Line
-              type="monotone"
-              dataKey="global_tilted_irradiance"
-              name="Global Tilted Irradiance (kWh)"
-              stroke="#4caf50"
-              dot={false}
-            />
-          )}
-          {showWeatherCode && (
-            <Line
-              type="monotone"
-              dataKey="weather_code"
-              name="Weather Code"
-              stroke="#ff0000"
-              dot={false}
-            />
-          )}
-          {showWindSpeed && (
-            <Line
-              type="monotone"
-              dataKey="wind_speed_10m"
-              name="Wind Speed (km/h)"
-              stroke="#0000ff"
-              dot={false}
-            />
-          )}
-        </LineChart>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={chartData}>
+            <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+            <XAxis dataKey="time" />
+            <YAxis />
+            <Tooltip content={<CustomTooltip />} />
+            <Legend />
+            {chartVisibility["temperature"] && (
+              <Line
+                type="monotone"
+                dataKey="temperature"
+                name="Temperature (°C)"
+                stroke="#8884d8"
+                dot={false}
+              />
+            )}
+            {chartVisibility["humidity"] && (
+              <Line
+                type="monotone"
+                dataKey="humidity"
+                name="Humidity (%)"
+                stroke="#82ca9d"
+                dot={false}
+              />
+            )}
+            {chartVisibility["rain"] && (
+              <Line
+                type="monotone"
+                dataKey="rain"
+                name="Rain (mm)"
+                stroke="#ffc658"
+                dot={false}
+              />
+            )}
+            {chartVisibility["snow"] && (
+              <Line
+                type="monotone"
+                dataKey="snow"
+                name="Snow (cm)"
+                stroke="#00bcd4"
+                dot={false}
+              />
+            )}
+            {chartVisibility["sunshineDuration"] && (
+              <Line
+                type="monotone"
+                dataKey="sunshine_duration"
+                name="Sunshine Duration (%)"
+                stroke="#ff9800"
+                dot={false}
+              />
+            )}
+            {chartVisibility["globalTiltedIrradiance"] && (
+              <Line
+                type="monotone"
+                dataKey="global_tilted_irradiance"
+                name="Global Tilted Irradiance (kWh)"
+                stroke="#4caf50"
+                dot={false}
+              />
+            )}
+            {chartVisibility["weatherCode"] && (
+              <Line
+                type="monotone"
+                dataKey="weather_code"
+                name="Weather Code"
+                stroke="#ff0000"
+                dot={false}
+              />
+            )}
+            {chartVisibility["windSpeed"] && (
+              <Line
+                type="monotone"
+                dataKey="wind_speed_10m"
+                name="Wind Speed (km/h)"
+                stroke="#0000ff"
+                dot={false}
+              />
+            )}
+          </LineChart>
         </ResponsiveContainer>
       </div>
       <div className="chart-controls">
-        <button className="main--nav--button" id={showTemperature + "_chart_button"} onClick={() => setShowTemperature(!showTemperature)}>
-          {showTemperature ? "Hide Temperature" : "Show Temperature"}
-        </button>
-        <button className="main--nav--button" id={showHumidity + "_chart_button"} onClick={() => setShowHumidity(!showHumidity)}>
-          {showHumidity ? "Hide Humidity" : "Show Humidity"}
-        </button>
-        <button className="main--nav--button" id={showRain + "_chart_button"} onClick={() => setShowRain(!showRain)}>
-          {showRain ? "Hide Rain" : "Show Rain"}
-        </button>
-        <button className="main--nav--button" id={showSnow + "_chart_button"} onClick={() => setShowSnow(!showSnow)}>
-          {showSnow ? "Hide Snow" : "Show Snow"}
-        </button>
-        <button className="main--nav--button" id={showSunshineDuration + "_chart_button"} onClick={() => setShowSunshineDuration(!showSunshineDuration)}>
-          {showSunshineDuration ? "Hide Sunshine" : "Show Sunshine"}
-        </button>
-        <button className="main--nav--button" id={showGlobalTiltedIrradiance + "_chart_button"}
-          onClick={() =>
-            setShowGlobalTiltedIrradiance(!showGlobalTiltedIrradiance)
-          }
+        <button
+          className="main--nav--button"
+          id={chartVisibility["temperature"] + "_chart_button"}
+          onClick={() => toggleChartVisibility("temperature")}
         >
-          {showGlobalTiltedIrradiance ? "Hide GTI" : "Show GTI"}
+          {chartVisibility["temperature"]
+            ? "Hide Temperature"
+            : "Show Temperature"}
         </button>
-        <button className="main--nav--button" id={showWeatherCode + "_chart_button"} onClick={() => setShowWeatherCode(!showWeatherCode)}>
-          {showWeatherCode ? "Hide Weather Code" : "Show Weather Code"}
+        <button
+          className="main--nav--button"
+          id={chartVisibility["humidity"] + "_chart_button"}
+          onClick={() => toggleChartVisibility("humidity")}
+        >
+          {chartVisibility["humidity"] ? "Hide Humidity" : "Show Humidity"}
         </button>
-        <button className="main--nav--button" id={showWindSpeed + "_chart_button"} onClick={() => setShowWindSpeed(!showWindSpeed)}>
-          {showWindSpeed ? "Hide Wind Speed" : "Show Wind Speed"}
+        <button
+          className="main--nav--button"
+          id={chartVisibility["rain"] + "_chart_button"}
+          onClick={() => toggleChartVisibility("rain")}
+        >
+          {chartVisibility["rain"] ? "Hide Rain" : "Show Rain"}
+        </button>
+        <button
+          className="main--nav--button"
+          id={chartVisibility["snow"] + "_chart_button"}
+          onClick={() => toggleChartVisibility("snow")}
+        >
+          {chartVisibility["snow"] ? "Hide Snow" : "Show Snow"}
+        </button>
+        <button
+          className="main--nav--button"
+          id={chartVisibility["sunshineDuration"] + "_chart_button"}
+          onClick={() => toggleChartVisibility("sunshineDuration")}
+        >
+          {chartVisibility["sunshineDuration"]
+            ? "Hide Sunshine"
+            : "Show Sunshine"}
+        </button>
+        <button
+          className="main--nav--button"
+          id={chartVisibility["globalTiltedIrradiance"] + "_chart_button"}
+          onClick={() => toggleChartVisibility("globalTiltedIrradiance")}
+        >
+          {chartVisibility["globalTiltedIrradiance"] ? "Hide GTI" : "Show GTI"}
+        </button>
+        <button
+          className="main--nav--button"
+          id={chartVisibility["weatherCode"] + "_chart_button"}
+          onClick={() => toggleChartVisibility("weatherCode")}
+        >
+          {chartVisibility["weatherCode"]
+            ? "Hide Weather Code"
+            : "Show Weather Code"}
+        </button>
+        <button
+          className="main--nav--button"
+          id={chartVisibility["windSpeed"] + "_chart_button"}
+          onClick={() => toggleChartVisibility("windSpeed")}
+        >
+          {chartVisibility["windSpeed"] ? "Hide Wind Speed" : "Show Wind Speed"}
         </button>
       </div>
     </div>

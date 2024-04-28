@@ -338,7 +338,7 @@ const SvgContainer = ({
   return (
     <>
       {tooltip_message && (
-        <Tooltip anchorSelect={"#" + svg_key} place="top">
+        <Tooltip anchorSelect={"#" + svg_key} place="left">
           {tooltip_message}
         </Tooltip>
       )}

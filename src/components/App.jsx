@@ -99,12 +99,32 @@ function App() {
     fetchData();
   }, [apiURL]);
 
+  const [chartVisibility, setChartVisibility] = useState({
+    temperature: true,
+    humidity: true,
+    rain: false,
+    snow: false,
+    sunshineDuration: false,
+    globalTiltedIrradiance: false,
+    weatherCode: false,
+    windSpeed: false,
+  });
+
+  const toggleChartVisibility = (chartKey) => {
+    setChartVisibility({
+      ...chartVisibility,
+      [chartKey]: !chartVisibility[chartKey],
+    });
+  };
+
   //Dynamic Styles
 
   const inputStyle = {
     width: `${30 + formData.location.length * 20}px`,
   };
 
+
+  // Return
   return (
     <div className="app--container">
       <form className="title--box" onSubmit={handleSubmit}>
@@ -184,7 +204,7 @@ function App() {
               </div>
 
             <div className="app--content">
-              {showChart && <Chart data={weatherData}></Chart>}
+              {showChart && <Chart data={weatherData} toggleChartVisibility={toggleChartVisibility} chartVisibility={chartVisibility}></Chart>}
 
               {showTable && <Table data={weatherData}></Table>}
 
