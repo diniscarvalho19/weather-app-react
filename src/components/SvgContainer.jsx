@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/SvgContainer.css";
 import { Tooltip } from "react-tooltip";
+import PropTypes from "prop-types";
 
 const SvgContainer = ({
   class_name,
@@ -352,6 +353,22 @@ const SvgContainer = ({
       </div>
     </>
   );
+};
+
+SvgContainer.propTypes = {
+  class_name: PropTypes.string.isRequired,
+  svg_key: PropTypes.oneOf([
+    "info",
+    "sunny",
+    "cloudy",
+    "smoky",
+    "hazy",
+    "mist",
+    "dusty",
+  ]).isRequired,
+  value: PropTypes.number,
+  unit: PropTypes.string,
+  tooltip_message: PropTypes.string,
 };
 
 export default SvgContainer;

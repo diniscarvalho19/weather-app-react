@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import CustomTooltip from "./CustomTooltip.jsx";
 import { ResponsiveContainer } from "recharts";
+import PropTypes from "prop-types";
 import "../styles/Chart.css";
 
 import {
@@ -13,7 +14,7 @@ import {
   Legend,
 } from "recharts";
 
-const Charts = ({ data,chartVisibility,  toggleChartVisibility }) => {
+const Charts = ({ data, chartVisibility, toggleChartVisibility }) => {
   if (Object.keys(data).length === 0) return null;
 
   const {
@@ -28,10 +29,6 @@ const Charts = ({ data,chartVisibility,  toggleChartVisibility }) => {
     weather_code,
     wind_speed_10m,
   } = data;
-
- 
-
-  
 
   //sunshine_duration from seconds per hour to percentage per hour
   const sunshinePercentage = sunshine_duration.map(
@@ -202,6 +199,12 @@ const Charts = ({ data,chartVisibility,  toggleChartVisibility }) => {
       </div>
     </div>
   );
+};
+
+Charts.propTypes = {
+  data: PropTypes.object.isRequired,
+  chartVisibility: PropTypes.object.isRequired,
+  toggleChartVisibility: PropTypes.func.isRequired,
 };
 
 export default Charts;

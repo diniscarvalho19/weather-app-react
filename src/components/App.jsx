@@ -21,12 +21,12 @@ function App() {
 
   const [showChart, setShowChart] = useState(false);
 
-  const maxDate =  new Date(new Date().getTime()-(2*24*60*60*1000));
+  const maxDate = new Date(new Date().getTime() - 2 * 24 * 60 * 60 * 1000);
 
-
-  const envApiUrl = (import.meta.env.MODE === "development" ? "http://localhost:3000/" : "https://sleepy-river-65200-79c7ffcf377b.herokuapp.com/");
-
-
+  const envApiUrl =
+    import.meta.env.MODE === "development"
+      ? "http://localhost:3000/"
+      : "https://sleepy-river-65200-79c7ffcf377b.herokuapp.com/";
 
   const [formData, setFormData] = useState({
     location: "Lisbon",
@@ -123,7 +123,6 @@ function App() {
     width: `${30 + formData.location.length * 20}px`,
   };
 
-
   // Return
   return (
     <div className="app--container">
@@ -141,14 +140,14 @@ function App() {
         <DatePicker
           selected={formData.startDate}
           onChange={(date) => handleDateChange(date, "startDate")}
-          maxDate={maxDate} 
+          maxDate={maxDate}
           showPopperArrow={true}
         />
         <label>to</label>
         <DatePicker
           selected={formData.endDate}
           onChange={(date) => handleDateChange(date, "endDate")}
-          maxDate={maxDate} 
+          maxDate={maxDate}
         />
 
         <button className="submit--button main--nav--button" type="submit">
@@ -161,18 +160,16 @@ function App() {
           <>
             <Loading />
           </>
-        ) : (
-          error ? (
-            <>
-            <Error error={error}></Error>
-            </>
-          ) : (
-            
+        ) : error ? (
           <>
-
+            <Error error={error}></Error>
+          </>
+        ) : (
+          <>
             <div className="app--buttons">
-
-            <button className="main--nav--button" id={showStats + "_button"}
+              <button
+                className="main--nav--button"
+                id={showStats + "_button"}
                 onClick={() => {
                   setShowStats(true);
                   setShowChart(false);
@@ -181,7 +178,9 @@ function App() {
               >
                 Show Stats
               </button>
-              <button className="main--nav--button" id={showChart + "_button"}
+              <button
+                className="main--nav--button"
+                id={showChart + "_button"}
                 onClick={() => {
                   setShowChart(true);
                   setShowTable(false);
@@ -191,7 +190,9 @@ function App() {
                 Show Chart
               </button>
 
-              <button className="main--nav--button" id={showTable + "_button"}
+              <button
+                className="main--nav--button"
+                id={showTable + "_button"}
                 onClick={() => {
                   setShowTable(true);
                   setShowChart(false);
@@ -200,17 +201,22 @@ function App() {
               >
                 Show Table
               </button>
-
-              </div>
+            </div>
 
             <div className="app--content">
-              {showChart && <Chart data={weatherData} toggleChartVisibility={toggleChartVisibility} chartVisibility={chartVisibility}></Chart>}
+              {showChart && (
+                <Chart
+                  data={weatherData}
+                  toggleChartVisibility={toggleChartVisibility}
+                  chartVisibility={chartVisibility}
+                ></Chart>
+              )}
 
               {showTable && <Table data={weatherData}></Table>}
 
               {showStats && <Stats data={weatherData}></Stats>}
             </div>
-          </>)
+          </>
         )}
       </div>
     </div>

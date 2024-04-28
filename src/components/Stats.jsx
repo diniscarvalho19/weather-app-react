@@ -2,6 +2,7 @@ import React from "react";
 import "../styles/Stats.css";
 import { weatherCodesData } from "../data/weather_codes.js";
 import SvgContainer from "./SvgContainer.jsx";
+import PropTypes from "prop-types";
 import { Tooltip } from "react-tooltip";
 
 const Stats = ({ data }) => {
@@ -67,14 +68,12 @@ const Stats = ({ data }) => {
   return (
     <div className="stats-container">
       <div className="info--icon--container">
-      <SvgContainer
-            svg_key="info"
-            tooltip_message={
-              <p> Hover over the data you want to know more!</p>
-            }
-          ></SvgContainer>
+        <SvgContainer
+          svg_key="info"
+          tooltip_message={<p> Hover over the data you want to know more!</p>}
+        ></SvgContainer>
       </div>
-      
+
       <div className="main--stats">
         <div className="main--icon--container">
           <SvgContainer
@@ -88,26 +87,28 @@ const Stats = ({ data }) => {
         </div>
 
         <div className="main--info--container">
-        
           <div className="upper">
             <p>{averageTemperature.toFixed(1)}°C</p>
           </div>
 
           <Tooltip anchorSelect=".upper" place="top">
-          <p>Average air temperature at 2 meters above ground.</p>
+            <p>Average air temperature at 2 meters above ground.</p>
           </Tooltip>
 
           <div className="downer">
-            <p> <span id="min">{minTemperature}°C</span> / <span id="max">{maxTemperature} °C</span>
+            <p>
+              {" "}
+              <span id="min">{minTemperature}°C</span> /{" "}
+              <span id="max">{maxTemperature} °C</span>
             </p>
           </div>
 
           <Tooltip anchorSelect="#min" place="bottom">
-          <p>Minimum air temperature at 2 meters above ground.</p>
+            <p>Minimum air temperature at 2 meters above ground.</p>
           </Tooltip>
 
           <Tooltip anchorSelect="#max" place="bottom">
-          <p>Minimum air temperature at 2 meters above ground.</p>
+            <p>Minimum air temperature at 2 meters above ground.</p>
           </Tooltip>
         </div>
 
@@ -118,7 +119,11 @@ const Stats = ({ data }) => {
             value={totalRain.toFixed(1)}
             unit={"mm"}
             tooltip_message={
-              <p> Total rain from large scale weather systems of the preceding hour in millimeter.</p>
+              <p>
+                {" "}
+                Total rain from large scale weather systems of the preceding
+                hour in millimeter.
+              </p>
             }
           ></SvgContainer>
 
@@ -138,7 +143,10 @@ const Stats = ({ data }) => {
             value={totalSnow.toFixed(1)}
             unit={"cm"}
             tooltip_message={
-              <p> Total snowfall amount of the preceding hour in centimeters.</p>
+              <p>
+                {" "}
+                Total snowfall amount of the preceding hour in centimeters.
+              </p>
             }
           ></SvgContainer>
 
@@ -159,16 +167,15 @@ const Stats = ({ data }) => {
             unit={"kWh"}
             tooltip_message={
               <>
-              <p>
-                Total energy that could be harnesses with a
-                <br></br>
-                Solar Panel of 2m&sup2; surface area and a 17% efficiency.
-                </p>
                 <p>
-                  [Average per Day:{" "}
-                  {solarEnergyPerDay.toFixed(2)} kWh]
+                  Total energy that could be harnesses with a<br></br>
+                  Solar Panel of 2m&sup2; surface area and a 17% efficiency.
                 </p>
-                <p>(The average household consumption in Portugal per day is 9.15 kWh) </p>
+                <p>[Average per Day: {solarEnergyPerDay.toFixed(2)} kWh]</p>
+                <p>
+                  (The average household consumption in Portugal per day is 9.15
+                  kWh){" "}
+                </p>
               </>
             }
           ></SvgContainer>
@@ -197,6 +204,8 @@ function calculateSolarPanelEnergy(
   return energyInKWh;
 }
 
-//Prop types thingys here
+Stats.propTypes = {
+  data: PropTypes.object.isRequired,
+};
 
 export default Stats;

@@ -21,7 +21,4 @@ const Loading = () => {
   );
 };
 
-
-//Prop types thingys here
-
 export default Loading;

@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../styles/Table.css";
+import PropTypes from "prop-types";
 
 function Table({ data }) {
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const [currentPageInput, setCurrentPageInput] = useState(currentPage + 1);
+
   if (Object.keys(data).length === 0) return null;
 
   const {
@@ -17,11 +22,7 @@ function Table({ data }) {
     wind_speed_10m,
   } = data;
 
-  const [pageStep, setPageStep] = useState(11);
-
-  const [currentPage, setCurrentPage] = useState(0);
-
-  const [currentPageInput, setCurrentPageInput] = useState(currentPage + 1);
+  const pageStep = 11;
 
   let maxPages = Math.ceil(time.length / pageStep);
 
@@ -49,7 +50,10 @@ function Table({ data }) {
   return (
     <div className="table--container">
       <div className="table--settings">
-        <button className="main--nav--button" onClick={decreasePageSize}> &larr;</button>
+        <button className="main--nav--button" onClick={decreasePageSize}>
+          {" "}
+          &larr;
+        </button>
         <div>
           <label> Go to page: </label>
           <input
@@ -60,7 +64,10 @@ function Table({ data }) {
             onChange={(e) => handleChange(e.target.value)}
           />
         </div>
-        <button className="main--nav--button" onClick={increasePageSize}> &rarr;</button>
+        <button className="main--nav--button" onClick={increasePageSize}>
+          {" "}
+          &rarr;
+        </button>
       </div>
 
       <table>
@@ -101,7 +108,6 @@ function Table({ data }) {
         </tbody>
       </table>
 
-
       <p className="page--info">
         {" "}
         Page {currentPage + 1} of {maxPages}{" "}
@@ -110,6 +116,8 @@ function Table({ data }) {
   );
 }
 
-//Prop types thingys here
+Table.propTypes = {
+  data: PropTypes.object.isRequired,
+};
 
 export default Table;
