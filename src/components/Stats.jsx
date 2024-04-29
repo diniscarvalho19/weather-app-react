@@ -14,7 +14,7 @@ const Stats = ({ data }) => {
     humidity,
     rain,
     snow,
-    sunshine_duration,
+    //sunshine_duration, TODO: Show sunshine % during the day (obviously)
     global_tilted_irradiance,
     weather_code,
     wind_speed_10m,
@@ -34,16 +34,6 @@ const Stats = ({ data }) => {
 
   const totalSnow = totalSum(snow);
 
-  // global_tilted_irradiance = {bi-axis | difuse and direct | W/m2}
-  // totalEnergy = Wh/m2
-  const totalEnergy = global_tilted_irradiance.reduce(
-    (total, irradiance, index) => {
-      const energy = irradiance * (sunshine_duration[index] / 3600);
-      return total + energy;
-    },
-    0
-  );
-
   let mostFrequentWeatherCode = null;
   let maxCount = 0;
   let weatherCodeCounts = {};
@@ -61,7 +51,8 @@ const Stats = ({ data }) => {
 
   const mostCommonWeatherKey = weatherCodesData[mostFrequentWeatherCode][1];
 
-  const solarEnergy = calculateSolarPanelEnergy(totalEnergy);
+  //global_tilted_irradiance = {bi-axis | difuse and direct | W/m2}
+  const solarEnergy = calculateSolarPanelEnergy(totalSum(global_tilted_irradiance));
 
   const solarEnergyPerDay = solarEnergy / (time.length / 24);
 
